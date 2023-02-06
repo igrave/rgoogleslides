@@ -645,3 +645,40 @@ add_replace_all_shapes_with_image_request <- function(google_slides_request = NU
   return(google_slides_request)
 }
 
+
+
+#' Add a group objects request
+#' @param google_slides_request (Optional) A Google Slides Request object which is used to manage requests to the API
+#' @param object_ids A list that contains of objects to group.
+#' @param group_id (Optional) A character vector to name the grouped object created instead of leaving it to Google
+#' @examples
+#' \dontrun{
+#' library(rgoogleslides)
+#' rgoogleslides::authorize()
+#'
+#' # Define the presentation slide id (Can be retrieved from the url of the slides)
+#' slides_id <- "<slide-id>"
+#'
+#' }
+#' @export
+group_objects_request <- function(google_slides_request = NULL,
+                                  group_id = NULL,
+                                  object_ids){
+  if(is.null(google_slides_request)){
+    google_slides_request <- google_slide_request_container$new()
+  }
+  # Validating inputs
+  assert_that(is.google_slide_request(google_slides_request))
+  assert_that(is.string(group_id) | is.null(group_id))
+  assert_that(is.character(object_ids))
+  
+  group_objects_request <- list(groupObjects = list(childrenObjectIds = object_ids))
+  
+  # Add the object id if its not null
+  if(!is.null(group_id)){
+    group_objects_request[['groupObjects']][['groupObjectId']] <- group_id
+  }
+  
+  google_slides_request$add_request(group_objects_request)
+  return(google_slides_request)
+}
