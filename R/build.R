@@ -120,7 +120,7 @@ add_create_shape_request <- function(google_slides_request = NULL, shape_type, p
                                                shapeType = shape_type))
 
   if(!is.null(object_id)){
-    create_shape_request[["objectId"]] <- object_id
+    create_shape_request[["createShape"]][["objectId"]] <- object_id
   }
 
   google_slides_request$add_request(create_shape_request)
